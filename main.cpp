@@ -3,122 +3,122 @@
 #include <iostream>
 #include <memory>
 
-// è£œåŠ©ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+// •â•ƒvƒƒOƒ‰ƒ€
 #include "gg.h"
 using namespace gg;
 
-// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‘¨æœŸï¼ˆç§’ï¼‰
+// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌüŠúi•bj
 const double cycle(5.0);
 
 //
-// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é–¢é€£ã®å‡¦ç†
+// ƒEƒBƒ“ƒhƒEŠÖ˜A‚Ìˆ—
 //
 class Window
 {
-  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è­˜åˆ¥å­
+  // ƒEƒBƒ“ƒhƒE‚Ì¯•Êq
   GLFWwindow *const window;
   
-  // é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—
+  // “§‹“Š‰e•ÏŠ·s—ñ
   GgMatrix mp;
   
-  // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«
+  // ƒgƒ‰ƒbƒNƒ{[ƒ‹
   GgTrackball tb;
   
 public:
   
-  // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+  // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
   Window(const char *title = "Game Graphics", int width = 640, int height = 480)
   : window(glfwCreateWindow(width, height, title, NULL, NULL))
   {
     if (window == NULL)
     {
-      // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒä½œæˆã§ããªã‹ã£ãŸ
+      // ƒEƒBƒ“ƒhƒE‚ªì¬‚Å‚«‚È‚©‚Á‚½
       std::cerr << "Can't create GLFW window." << std::endl;
       exit(1);
     }
     
-    // ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å‡¦ç†å¯¾è±¡ã«ã™ã‚‹
+    // Œ»İ‚ÌƒEƒBƒ“ƒhƒE‚ğˆ—‘ÎÛ‚É‚·‚é
     glfwMakeContextCurrent(window);
     
-    // ä½œæˆã—ãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å¯¾ã™ã‚‹è¨­å®š
+    // ì¬‚µ‚½ƒEƒBƒ“ƒhƒE‚É‘Î‚·‚éİ’è
     glfwSwapInterval(1);
     
-    // ã‚²ãƒ¼ãƒ ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ç‰¹è«–ã®éƒ½åˆã«ã‚‚ã¨ã¥ãåˆæœŸåŒ–
+    // ƒQ[ƒ€ƒOƒ‰ƒtƒBƒbƒNƒX“Á˜_‚Ì“s‡‚É‚à‚Æ‚Ã‚­‰Šú‰»
     ggInit();
     
-    // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’è¨˜éŒ²ã—ã¦ãŠã
+    // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ‹L˜^‚µ‚Ä‚¨‚­
     glfwSetWindowUserPointer(window, this);
     
-    // ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æ“ä½œã—ãŸã¨ãã®å‡¦ç†
+    // ƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‘€ì‚µ‚½‚Æ‚«‚Ìˆ—
     glfwSetMouseButtonCallback(window, mouse);
     
-    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†ã‚’ç™»éŒ²ã™ã‚‹
+    // ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY•ÏX‚ÉŒÄ‚Ño‚·ˆ—‚ğ“o˜^‚·‚é
     glfwSetFramebufferSizeCallback(window, resize);
     
-    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¨­å®šã‚’åˆæœŸåŒ–ã™ã‚‹
+    // ƒEƒBƒ“ƒhƒE‚Ìİ’è‚ğ‰Šú‰»‚·‚é
     resize(window, width, height);
   }
   
-  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+  // ƒfƒXƒgƒ‰ƒNƒ^
   virtual ~Window()
   {
     glfwDestroyWindow(window);
   }
   
-  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã¹ãã‹ã‚’åˆ¤å®šã™ã‚‹
+  // ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é‚×‚«‚©‚ğ”»’è‚·‚é
   int shouldClose() const
   {
     return glfwWindowShouldClose(window) | glfwGetKey(window, GLFW_KEY_ESCAPE);
   }
   
-  // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
+  // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚ÄƒCƒxƒ“ƒg‚ğæ‚èo‚·
   void swapBuffers()
   {
-    // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã‚‹
+    // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚é
     glfwSwapBuffers(window);
     
-    // OpenGL ã®ã‚¨ãƒ©ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+    // OpenGL ‚ÌƒGƒ‰[‚ğƒ`ƒFƒbƒN‚·‚é
     ggError("SwapBuffers");
     
-    // ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
+    // ƒCƒxƒ“ƒg‚ğæ‚èo‚·
     glfwPollEvents();
     
-    // å·¦ãƒœã‚¿ãƒ³ãƒ‰ãƒ©ãƒƒã‚°
+    // ¶ƒ{ƒ^ƒ“ƒhƒ‰ƒbƒO
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1))
     {
-      // ãƒã‚¦ã‚¹ã®ç¾åœ¨ä½ç½®ã‚’å–å¾—ã™ã‚‹
+      // ƒ}ƒEƒX‚ÌŒ»İˆÊ’u‚ğæ“¾‚·‚é
       double x, y;
       glfwGetCursorPos(window, &x, &y);
       
-      // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«å‡¦ç†
+      // ƒgƒ‰ƒbƒNƒ{[ƒ‹ˆ—
       tb.motion(static_cast<float>(x), static_cast<float>(y));
     }
   }
   
-  // ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æ“ä½œã—ãŸã¨ãã®å‡¦ç†
+  // ƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‘€ì‚µ‚½‚Æ‚«‚Ìˆ—
   static void mouse(GLFWwindow *window, int button, int action, int mods)
   {
-    // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’å¾—ã‚‹
+    // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ“¾‚é
     Window *const instance(static_cast<Window *>(glfwGetWindowUserPointer(window)));
     
     if (instance)
     {
-      // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ç¾åœ¨ä½ç½®ã‚’å–å¾—ã™ã‚‹
+      // ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌŒ»İˆÊ’u‚ğæ“¾‚·‚é
       double x, y;
       glfwGetCursorPos(window, &x, &y);
       
       switch (button)
       {
         case GLFW_MOUSE_BUTTON_1:
-          // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«å‡¦ç†
+          // ƒgƒ‰ƒbƒNƒ{[ƒ‹ˆ—
           if (action)
           {
-            // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«å‡¦ç†é–‹å§‹
+            // ƒgƒ‰ƒbƒNƒ{[ƒ‹ˆ—ŠJn
             instance->tb.start(static_cast<float>(x), static_cast<float>(y));
           }
           else
           {
-            // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«å‡¦ç†çµ‚äº†
+            // ƒgƒ‰ƒbƒNƒ{[ƒ‹ˆ—I—¹
             instance->tb.stop(static_cast<float>(x), static_cast<float>(y));
           }
           break;
@@ -132,32 +132,32 @@ public:
     }
   }
   
-  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã®å‡¦ç†
+  // ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY•ÏX‚Ìˆ—
   static void resize(GLFWwindow *window, int width, int height)
   {
-    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å…¨ä½“ã‚’ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã«ã™ã‚‹
+    // ƒEƒBƒ“ƒhƒE‘S‘Ì‚ğƒrƒ…[ƒ|[ƒg‚É‚·‚é
     glViewport(0, 0, width, height);
     
-    // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’å¾—ã‚‹
+    // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ“¾‚é
     Window *const instance(static_cast<Window *>(glfwGetWindowUserPointer(window)));
     
     if (instance != NULL)
     {
-      // é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹ï¼ˆã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯” w / hï¼‰
+      // “§‹“Š‰e•ÏŠ·s—ñ‚ğ‹‚ß‚éiƒAƒXƒyƒNƒg”ä w / hj
       instance->mp.loadPerspective(1.0f, (float)width / (float)height, 1.0f, 20.0f);
       
-      // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«å‡¦ç†ã®ç¯„å›²ã‚’è¨­å®šã™ã‚‹
+      // ƒgƒ‰ƒbƒNƒ{[ƒ‹ˆ—‚Ì”ÍˆÍ‚ğİ’è‚·‚é
       instance->tb.region(width, height);
     }
   }
   
-  // æŠ•å½±å¤‰æ›è¡Œåˆ—ã‚’å–ã‚Šå‡ºã™
+  // “Š‰e•ÏŠ·s—ñ‚ğæ‚èo‚·
   const GgMatrix &getMp() const
   {
     return mp;
   }
   
-  // ãƒˆãƒ©ãƒƒã‚¯ãƒœãƒ¼ãƒ«ã®å¤‰æ›è¡Œåˆ—ã‚’å–ã‚Šå‡ºã™
+  // ƒgƒ‰ƒbƒNƒ{[ƒ‹‚Ì•ÏŠ·s—ñ‚ğæ‚èo‚·
   const GLfloat *getTb() const
   {
     return tb.get();
@@ -165,91 +165,91 @@ public:
 };
 
 //
-// ãƒ—ãƒ­ã‚°ãƒ©ãƒ çµ‚äº†æ™‚ã®å‡¦ç†
+// ƒvƒƒOƒ‰ƒ€I—¹‚Ìˆ—
 //
 static void cleanup()
 {
-  // GLFW ã®çµ‚äº†å‡¦ç†
+  // GLFW ‚ÌI—¹ˆ—
   glfwTerminate();
 }
 
 //
-// ãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+// ƒƒCƒ“ƒvƒƒOƒ‰ƒ€
 //
 int main(int argc, const char * argv[])
 {
-  // GLFW ã‚’åˆæœŸåŒ–ã™ã‚‹
+  // GLFW ‚ğ‰Šú‰»‚·‚é
   if (glfwInit() == GL_FALSE)
   {
-    // åˆæœŸåŒ–ã«å¤±æ•—ã—ãŸ
+    // ‰Šú‰»‚É¸”s‚µ‚½
     std::cerr << "Can't initialize GLFW" << std::endl;
     return 1;
   }
   
-  // ãƒ—ãƒ­ã‚°ãƒ©ãƒ çµ‚äº†æ™‚ã®å‡¦ç†ã‚’ç™»éŒ²ã™ã‚‹
+  // ƒvƒƒOƒ‰ƒ€I—¹‚Ìˆ—‚ğ“o˜^‚·‚é
   atexit(cleanup);
   
-  // OpenGL Version 3.2 Core Profile ã‚’é¸æŠã™ã‚‹
+  // OpenGL Version 3.2 Core Profile ‚ğ‘I‘ğ‚·‚é
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
-  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã™ã‚‹
+  // ƒEƒBƒ“ƒhƒE‚ğì¬‚·‚é
   Window window("Vertex Shader Sample 1");
   
-  // èƒŒæ™¯è‰²ã‚’æŒ‡å®šã™ã‚‹
+  // ”wŒiF‚ğw’è‚·‚é
   glClearColor(0.2f, 0.3f, 0.6f, 0.0f);
   
-  // éš é¢æ¶ˆå»ã‚’æœ‰åŠ¹ã«ã™ã‚‹
+  // ‰B–ÊÁ‹‚ğ—LŒø‚É‚·‚é
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 
-  // ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
+  // ƒvƒƒOƒ‰ƒ€ƒIƒuƒWƒFƒNƒg‚Ìì¬
   const GLuint program(ggLoadShader("simple.vert", "simple.frag"));
   
-  // uniform å¤‰æ•°ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ¤œç´¢ï¼ˆè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã° -1ï¼‰
+  // uniform •Ï”‚ÌƒCƒ“ƒfƒbƒNƒX‚ÌŒŸõiŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î -1j
   const GLint mcLoc(glGetUniformLocation(program, "mc"));
   const GLint tLoc(glGetUniformLocation(program, "t"));
   
-  // ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—ã‚’ mv ã«æ±‚ã‚ã‚‹
+  // ƒrƒ…[•ÏŠ·s—ñ‚ğ mv ‚É‹‚ß‚é
   const GgMatrix mv(ggLookat(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f));
   
-  // å›³å½¢ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
+  // }Œ`ƒf[ƒ^‚Ìì¬
   const std::unique_ptr<const GgPoints> cube(ggPointsCube(10000, 2.0f));
   
-  // çµŒéæ™‚é–“ã®ãƒªã‚»ãƒƒãƒˆ
+  // Œo‰ßŠÔ‚ÌƒŠƒZƒbƒg
   glfwSetTime(0.0);
   
-  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹é–“ãã‚Šè¿”ã—æç”»ã™ã‚‹
+  // ƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚éŠÔ‚­‚è•Ô‚µ•`‰æ‚·‚é
   while (window.shouldClose() == GL_FALSE)
   {
-    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ¶ˆå»ã™ã‚‹
+    // ƒEƒBƒ“ƒhƒE‚ğÁ‹‚·‚é
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½¿ç”¨é–‹å§‹
+    // ƒVƒF[ƒ_ƒvƒƒOƒ‰ƒ€‚Ìg—pŠJn
     glUseProgram(program);
     
-    // ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼å¤‰æ›
+    // ƒ‚ƒfƒ‹ƒrƒ…[•ÏŠ·
     const GgMatrix mw(mv * window.getTb());
 
-    // ãƒ¢ãƒ‡ãƒ«ãƒ“ãƒ¥ãƒ¼ãƒ»æŠ•å½±å¤‰æ›
+    // ƒ‚ƒfƒ‹ƒrƒ…[E“Š‰e•ÏŠ·
     const GgMatrix mc(window.getMp() * mw);
     
-    // uniform å¤‰æ•°ã‚’è¨­å®šã™ã‚‹
+    // uniform •Ï”‚ğİ’è‚·‚é
     glUniformMatrix4fv(mcLoc, 1, GL_FALSE, mc.get());
     
-    // æ™‚åˆ»ã®è¨ˆæ¸¬
+    // ‚ÌŒv‘ª
     glUniform1f(tLoc, static_cast<float>(fmod(glfwGetTime(), cycle) / cycle));
     
-    // å›³å½¢ã®æç”»
+    // }Œ`‚Ì•`‰æ
     cube->draw();
     
-    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½¿ç”¨çµ‚äº†
+    // ƒVƒF[ƒ_ƒvƒƒOƒ‰ƒ€‚Ìg—pI—¹
     glUseProgram(0);
     
-    // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
+    // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚ÄƒCƒxƒ“ƒg‚ğæ‚èo‚·
     window.swapBuffers();
   }
   
