@@ -144,7 +144,7 @@ public:
     if (instance != NULL)
     {
       // 透視投影変換行列を求める（アスペクト比 w / h）
-      instance->mp.loadPerspective(1.0f, (float)width / (float)height, 1.0f, 20.0f);
+      instance->mp.loadPerspective(0.8f, (float)width / (float)height, 2.0f, 4.5f);
       
       // トラックボール処理の範囲を設定する
       instance->tb.region(width, height);
@@ -214,7 +214,7 @@ int main(int argc, const char * argv[])
   const GLint tLoc(glGetUniformLocation(program, "t"));
   
   // ビュー変換行列を mv に求める
-  const GgMatrix mv(ggLookat(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f));
+  const GgMatrix mv(ggLookat(2.0f, 1.5f, 2.5f, 0.0f, -0.2f, 0.0f, 0.0f, 1.0f, 0.0f));
   
   // 図形データの作成
   const std::unique_ptr<const GgPoints> cube(ggPointsCube(10000, 2.0f));
