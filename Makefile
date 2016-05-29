@@ -2,7 +2,7 @@ TARGET	= vssample1
 SOURCES	= $(wildcard *.cpp)
 HEADERS	= $(wildcard *.h)
 OBJECTS	= $(patsubst %.cpp,%.o,$(SOURCES))
-CXXFLAGS	= --std=c++0x -Wall -DX11 -Dnullptr=NULL
+CXXFLAGS	= --std=c++0x -Wall -DX11
 LDLIBS	= -lGL -lglfw3 -lXrandr -lXinerama -lXcursor -lXxf86vm -lXi -lX11 -lpthread -lrt -lm
 
 .PHONY: clean
